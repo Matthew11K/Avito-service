@@ -24,3 +24,9 @@ go.work.sum
 .env
 
 .idea/
+
+# файлы с рекомендациями с прошлых отборов
+Solution and advice/
+
+#задание
+Backend-traine*
