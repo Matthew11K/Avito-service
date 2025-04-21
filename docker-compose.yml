@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: avito-service
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - migrations
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+      - "9000:9000"
+    networks:
+      - avito-network
+    restart: on-failure
+
+  db:
+    image: postgres:15-alpine
+    container_name: avito-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-avito}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - avito-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrations:
+    image: migrate/migrate
+    container_name: avito-migrations
+    volumes:
+      - ./migrations:/migrations
+    command: ["-path", "/migrations", "-database", "postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-avito}?sslmode=disable", "up"]
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - avito-network
+
+networks:
+  avito-network:
+    driver: bridge
+
+volumes:
+  postgres-data: 

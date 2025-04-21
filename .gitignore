@@ -4,7 +4,6 @@
 *.dll
 *.so
 *.dylib
-bin
 
 # Test binary, built with `go test -c`
 *.test
@@ -24,6 +23,9 @@ go.work.sum
 .env
 
 .idea/
+*~
+.*.swp
+.DS_Store
 
 # файлы с рекомендациями с прошлых отборов
 Solution and advice/
