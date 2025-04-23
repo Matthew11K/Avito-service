@@ -1,3 +1,4 @@
+//nolint:revive // структура теста требует неиспользуемых параметров для поддержания единообразия
 package reception_test
 
 import (
@@ -54,7 +55,10 @@ func TestService_CreateReception(t *testing.T) {
 					Run(func(args mock.Arguments) {
 						ctx := args.Get(0).(context.Context)
 						fn := args.Get(1).(func(context.Context) error)
-						fn(ctx)
+						err := fn(ctx)
+						if err != nil {
+							assert.IsType(t, &domainReception.ErrNoActiveReception{}, err)
+						}
 					})
 			},
 			expectedResult: &domainReception.Reception{
@@ -101,7 +105,10 @@ func TestService_CreateReception(t *testing.T) {
 					Run(func(args mock.Arguments) {
 						ctx := args.Get(0).(context.Context)
 						fn := args.Get(1).(func(context.Context) error)
-						fn(ctx)
+						err := fn(ctx)
+						if err != nil {
+							assert.IsType(t, &domainReception.ErrActiveReceptionExists{}, err)
+						}
 					})
 			},
 			expectedResult:    nil,
@@ -178,7 +185,10 @@ func TestService_CloseReception(t *testing.T) {
 					Run(func(args mock.Arguments) {
 						ctx := args.Get(0).(context.Context)
 						fn := args.Get(1).(func(context.Context) error)
-						fn(ctx)
+						err := fn(ctx)
+						if err != nil {
+							assert.IsType(t, &domainReception.ErrNoActiveReception{}, err)
+						}
 					})
 			},
 			expectedResult: &domainReception.Reception{
@@ -215,7 +225,10 @@ func TestService_CloseReception(t *testing.T) {
 					Run(func(args mock.Arguments) {
 						ctx := args.Get(0).(context.Context)
 						fn := args.Get(1).(func(context.Context) error)
-						fn(ctx)
+						err := fn(ctx)
+						if err != nil {
+							assert.Error(t, err)
+						}
 					})
 			},
 			expectedResult:    nil,

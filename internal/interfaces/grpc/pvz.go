@@ -17,7 +17,7 @@ type pvzServiceServer struct {
 	logger     *slog.Logger
 }
 
-func (s *pvzServiceServer) GetPVZList(ctx context.Context, req *pbpvz.GetPVZListRequest) (*pbpvz.GetPVZListResponse, error) {
+func (s *pvzServiceServer) GetPVZList(ctx context.Context, _ *pbpvz.GetPVZListRequest) (*pbpvz.GetPVZListResponse, error) {
 	pvzReq := domainPVZ.GetPVZsRequest{
 		Page:  1,
 		Limit: 100,

@@ -7,6 +7,12 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	DefaultMaxConn  = 10
+	DefaultMinConn  = 1
+	MaxAllowedConns = 100
+)
+
 type Config struct {
 	HTTPAddr        string        `mapstructure:"HTTP_ADDR"`
 	GRPCAddr        string        `mapstructure:"GRPC_ADDR"`
@@ -45,6 +51,17 @@ func LoadConfig() *Config {
 	if err := viper.Unmarshal(config); err != nil {
 		log.Printf("Ошибка при разборе конфигурации: %v\n", err)
 		return getDefaultConfig()
+	}
+
+	// Ограничения для DBMaxConn и DBMinConn
+	if config.DBMaxConn <= 0 || config.DBMaxConn > MaxAllowedConns {
+		log.Printf("Некорректное значение DBMaxConn (%d), используется значение по умолчанию: %d\n", config.DBMaxConn, DefaultMaxConn)
+		config.DBMaxConn = DefaultMaxConn
+	}
+
+	if config.DBMinConn < 0 || config.DBMinConn > MaxAllowedConns {
+		log.Printf("Некорректное значение DBMinConn (%d), используется значение по умолчанию: %d\n", config.DBMinConn, DefaultMinConn)
+		config.DBMinConn = DefaultMinConn
 	}
 
 	return config

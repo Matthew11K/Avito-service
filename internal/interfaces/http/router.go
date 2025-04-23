@@ -20,6 +20,7 @@ type Router struct {
 	logger  *slog.Logger
 }
 
+//nolint:funlen // функция инициализации роутера должна быть целостной для наглядности и поддержки
 func NewRouter(
 	authSvc *auth.Service,
 	pvzSvc *pvz.Service,

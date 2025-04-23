@@ -1,3 +1,4 @@
+//nolint:revive // структура теста требует неиспользуемых параметров для поддержания единообразия
 package auth_test
 
 import (
@@ -50,7 +51,10 @@ func TestService_Register(t *testing.T) {
 					Run(func(args mock.Arguments) {
 						ctx := args.Get(0).(context.Context)
 						fn := args.Get(1).(func(context.Context) error)
-						fn(ctx)
+						err := fn(ctx)
+						if err != nil {
+							assert.IsType(t, &domainAuth.ErrUserAlreadyExists{}, err)
+						}
 					})
 			},
 			expectedUser: &domainAuth.User{
@@ -134,7 +138,10 @@ func TestService_Register(t *testing.T) {
 					Run(func(args mock.Arguments) {
 						ctx := args.Get(0).(context.Context)
 						fn := args.Get(1).(func(context.Context) error)
-						fn(ctx)
+						err := fn(ctx)
+						if err != nil {
+							assert.IsType(t, &domainAuth.ErrUserAlreadyExists{}, err)
+						}
 					})
 			},
 			expectedUser:  nil,

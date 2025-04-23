@@ -10,7 +10,7 @@ import (
 
 type DomainPVZService interface {
 	GetPVZByID(ctx context.Context, id uuid.UUID) (*pvz.PVZ, error)
-	GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error)
+	GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.WithReceptions, error)
 }
 
 type PVZServiceAdapter struct {
@@ -32,6 +32,6 @@ func (a *PVZServiceAdapter) GetPVZByID(ctx context.Context, id string) (*pvz.PVZ
 	return a.domainService.GetPVZByID(ctx, uuid)
 }
 
-func (a *PVZServiceAdapter) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error) {
+func (a *PVZServiceAdapter) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.WithReceptions, error) {
 	return a.domainService.GetPVZs(ctx, req)
 }

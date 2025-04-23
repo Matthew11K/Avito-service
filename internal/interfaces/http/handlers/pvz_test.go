@@ -1,3 +1,4 @@
+//nolint:revive // структура теста требует неиспользуемых параметров для поддержания единообразия
 package handlers_test
 
 import (
@@ -224,7 +225,7 @@ func TestPVZHandler_GetPVZs(t *testing.T) {
 			name:        "Успешное получение списка ПВЗ без фильтров",
 			queryParams: map[string]string{},
 			setupMock: func(mockSvc *mocks.PVZService) {
-				pvzs := []pvz.PVZWithReceptions{
+				pvzs := []pvz.WithReceptions{
 					{
 						PVZ: pvz.PVZ{
 							ID:               pvzID1,
@@ -276,7 +277,7 @@ func TestPVZHandler_GetPVZs(t *testing.T) {
 			setupMock: func(mockSvc *mocks.PVZService) {
 				city := pvz.CityMoscow
 
-				pvzs := []pvz.PVZWithReceptions{
+				pvzs := []pvz.WithReceptions{
 					{
 						PVZ: pvz.PVZ{
 							ID:               pvzID1,
@@ -306,7 +307,7 @@ func TestPVZHandler_GetPVZs(t *testing.T) {
 				mockSvc.On("GetPVZs", mock.Anything, mock.MatchedBy(func(req pvz.GetPVZsRequest) bool {
 					return req.Page == 1 && req.Limit == 10 &&
 						req.StartDate != nil && req.EndDate != nil
-				})).Return([]pvz.PVZWithReceptions{
+				})).Return([]pvz.WithReceptions{
 					{
 						PVZ: pvz.PVZ{
 							ID:               pvzID1,
@@ -335,7 +336,7 @@ func TestPVZHandler_GetPVZs(t *testing.T) {
 				"limit": "5",
 			},
 			setupMock: func(mockSvc *mocks.PVZService) {
-				pvzs := []pvz.PVZWithReceptions{
+				pvzs := []pvz.WithReceptions{
 					{
 						PVZ: pvz.PVZ{
 							ID:               pvzID1,

@@ -18,7 +18,7 @@ import (
 
 type PVZService interface {
 	CreatePVZ(ctx context.Context, req pvz.CreatePVZRequest) (*pvz.PVZ, error)
-	GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error)
+	GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.WithReceptions, error)
 }
 
 type PVZHandler struct {
@@ -42,6 +42,7 @@ func (h *PVZHandler) CreatePVZ(w http.ResponseWriter, r *http.Request) {
 
 	var city pvz.City
 
+	//nolint:exhaustive // Обрабатываем только известные города
 	switch req.City {
 	case dto.PVZCity("Москва"):
 		city = pvz.CityMoscow
@@ -86,6 +87,9 @@ func (h *PVZHandler) CreatePVZ(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusCreated, response)
 }
 
+// разбиение усложнит поддержку
+//
+//nolint:gocognit,funlen // whyNoLint: HTTP-обработчик содержит множество проверок входных параметров из разных источников,
 func (h *PVZHandler) GetPVZs(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 
@@ -164,7 +168,7 @@ func (h *PVZHandler) GetPVZs(w http.ResponseWriter, r *http.Request) {
 
 	filteredList := pvzList
 	if requestedCity != "" {
-		filteredList = make([]pvz.PVZWithReceptions, 0)
+		filteredList = make([]pvz.WithReceptions, 0)
 
 		for _, item := range pvzList {
 			if string(item.PVZ.City) == requestedCity {
@@ -187,6 +191,7 @@ func (h *PVZHandler) GetPVZs(w http.ResponseWriter, r *http.Request) {
 
 				var productType dto.ProductType
 
+				//nolint:exhaustive // Обрабатываем только 	известные типы товаров
 				switch pr.Type {
 				case "электроника":
 					productType = dto.ProductType("электроника")
@@ -209,6 +214,7 @@ func (h *PVZHandler) GetPVZs(w http.ResponseWriter, r *http.Request) {
 
 			var status dto.ReceptionStatus
 
+			//nolint:exhaustive // Обрабатываем только статусы в прогрессе и закрытые
 			switch r.Reception.Status {
 			case "in_progress":
 				status = dto.InProgress

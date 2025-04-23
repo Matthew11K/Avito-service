@@ -26,6 +26,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+//nolint:funlen // main агрегирует все зависимости и точки входа, разбивать на части нецелесообразно для читаемости
 func main() {
 	cfg := config.LoadConfig()
 
@@ -38,6 +39,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	//nolint:gosec // cfg.DBMaxConn и cfg.DBMinConn всегда валидируются и ограничиваются в config.LoadConfig, переполнение невозможно
 	dbConfig.MaxConns = int32(cfg.DBMaxConn)
 	dbConfig.MinConns = int32(cfg.DBMinConn)
 
@@ -46,11 +48,15 @@ func main() {
 		logger.Error("Ошибка при подключении к базе данных", "error", err)
 		os.Exit(1)
 	}
-	defer db.Close()
+
+	defer func() {
+		db.Close()
+		logger.Info("Подключение к базе данных закрыто")
+	}()
 
 	if err := db.Ping(context.Background()); err != nil {
 		logger.Error("Ошибка при пинге базы данных", "error", err)
-		os.Exit(1)
+		return
 	}
 
 	logger.Info("Подключение к базе данных установлено")

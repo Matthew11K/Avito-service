@@ -17,7 +17,7 @@ type Transactor interface {
 type Repository interface {
 	CreatePVZ(ctx context.Context, city pvz.City) (*pvz.PVZ, error)
 	GetPVZByID(ctx context.Context, id uuid.UUID) (*pvz.PVZ, error)
-	GetPVZs(ctx context.Context, startDate, endDate *time.Time, city *pvz.City, page, limit int) ([]pvz.PVZWithReceptions, error)
+	GetPVZs(ctx context.Context, startDate, endDate *time.Time, city *pvz.City, page, limit int) ([]pvz.WithReceptions, error)
 }
 
 type Service struct {
@@ -49,7 +49,7 @@ func (s *Service) CreatePVZ(ctx context.Context, req pvz.CreatePVZRequest) (*pvz
 	return pvzObj, nil
 }
 
-func (s *Service) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error) {
+func (s *Service) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.WithReceptions, error) {
 	if req.Page <= 0 {
 		req.Page = 1
 	}

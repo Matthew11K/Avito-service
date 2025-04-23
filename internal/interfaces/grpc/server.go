@@ -14,7 +14,7 @@ import (
 
 type PVZService interface {
 	GetPVZByID(ctx context.Context, id string) (*pvz.PVZ, error)
-	GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error)
+	GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.WithReceptions, error)
 }
 
 type Server struct {

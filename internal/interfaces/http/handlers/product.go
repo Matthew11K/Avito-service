@@ -59,6 +59,7 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 	var productType product.Type
 
+	//nolint:exhaustive // Обрабатываем только известные типы товаров
 	switch req.Type {
 	case dto.PostProductsJSONBodyType("электроника"):
 		productType = product.TypeElectronics

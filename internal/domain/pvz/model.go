@@ -44,7 +44,7 @@ type GetPVZsRequest struct {
 	Limit     int        `json:"limit"`
 }
 
-type PVZWithReceptions struct {
+type WithReceptions struct {
 	PVZ        PVZ                  `json:"pvz"`
 	Receptions []ReceptionWithItems `json:"receptions"`
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+	"time"
 
 	"avito/internal/application/auth"
 	"avito/internal/application/product"
@@ -28,8 +29,9 @@ func New(
 
 	server := &Server{
 		server: &http.Server{
-			Addr:    addr,
-			Handler: router.Handler(),
+			Addr:              addr,
+			Handler:           router.Handler(),
+			ReadHeaderTimeout: 10 * time.Second,
 		},
 		logger: logger,
 	}

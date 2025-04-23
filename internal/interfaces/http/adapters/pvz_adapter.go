@@ -21,6 +21,6 @@ func (a *PVZServiceAdapter) CreatePVZ(ctx context.Context, req pvz.CreatePVZRequ
 	return a.service.CreatePVZ(ctx, req)
 }
 
-func (a *PVZServiceAdapter) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error) {
+func (a *PVZServiceAdapter) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.WithReceptions, error) {
 	return a.service.GetPVZs(ctx, req)
 }

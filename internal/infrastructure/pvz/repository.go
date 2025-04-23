@@ -65,7 +65,9 @@ func (r *Repository) GetPVZByID(ctx context.Context, id uuid.UUID) (*pvz.PVZ, er
 	return &pvzObj, nil
 }
 
-func (r *Repository) GetPVZs(ctx context.Context, startDate, endDate *time.Time, city *pvz.City, page, limit int) ([]pvz.PVZWithReceptions, error) {
+//nolint:funlen // сложный SQL-конструктор, разбиение ухудшит читаемость и поддержку кода
+func (r *Repository) GetPVZs(ctx context.Context, startDate, endDate *time.Time, city *pvz.City,
+	page, limit int) ([]pvz.WithReceptions, error) {
 	q := txs.GetQuerier(ctx, r.pool)
 
 	query := `
@@ -125,7 +127,7 @@ func (r *Repository) GetPVZs(ctx context.Context, startDate, endDate *time.Time,
 	}
 	defer rows.Close()
 
-	var result []pvz.PVZWithReceptions
+	var result []pvz.WithReceptions
 
 	for rows.Next() {
 		var pvzObj pvz.PVZ
@@ -138,7 +140,7 @@ func (r *Repository) GetPVZs(ctx context.Context, startDate, endDate *time.Time,
 			return nil, fmt.Errorf("ошибка при получении приемок для ПВЗ: %w", err)
 		}
 
-		result = append(result, pvz.PVZWithReceptions{
+		result = append(result, pvz.WithReceptions{
 			PVZ:        pvzObj,
 			Receptions: receptions,
 		})
@@ -175,7 +177,6 @@ func (r *Repository) getReceptionsWithProductsByPVZID(ctx context.Context, pvzID
 		query += fmt.Sprintf(" AND r.date_time <= $%d", argIndex)
 
 		args = append(args, endDate)
-		argIndex++
 	}
 
 	query += " ORDER BY r.date_time DESC"

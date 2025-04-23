@@ -52,6 +52,7 @@ func (s *Service) CreateReception(ctx context.Context, req reception.CreateRecep
 		if err == nil {
 			return &reception.ErrActiveReceptionExists{}
 		}
+
 		if _, ok := err.(*reception.ErrNoActiveReception); !ok {
 			return fmt.Errorf("ошибка при проверке активной приемки: %w", err)
 		}

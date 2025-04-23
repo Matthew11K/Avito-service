@@ -46,23 +46,23 @@ func (_m *PVZService) CreatePVZ(ctx context.Context, req pvz.CreatePVZRequest) (
 }
 
 // GetPVZs provides a mock function with given fields: ctx, req
-func (_m *PVZService) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error) {
+func (_m *PVZService) GetPVZs(ctx context.Context, req pvz.GetPVZsRequest) ([]pvz.WithReceptions, error) {
 	ret := _m.Called(ctx, req)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetPVZs")
 	}
 
-	var r0 []pvz.PVZWithReceptions
+	var r0 []pvz.WithReceptions
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, pvz.GetPVZsRequest) ([]pvz.PVZWithReceptions, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, pvz.GetPVZsRequest) ([]pvz.WithReceptions, error)); ok {
 		return rf(ctx, req)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, pvz.GetPVZsRequest) []pvz.PVZWithReceptions); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, pvz.GetPVZsRequest) []pvz.WithReceptions); ok {
 		r0 = rf(ctx, req)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]pvz.PVZWithReceptions)
+			r0 = ret.Get(0).([]pvz.WithReceptions)
 		}
 	}
 

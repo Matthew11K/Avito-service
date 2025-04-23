@@ -1,3 +1,4 @@
+//nolint:revive // структура теста требует неиспользуемых параметров для поддержания единообразия
 package pvz_test
 
 import (
@@ -102,7 +103,7 @@ func TestService_GetPVZs(t *testing.T) {
 		name          string
 		request       domainPvz.GetPVZsRequest
 		mockSetup     func(*mocks.Repository)
-		expectedItems []domainPvz.PVZWithReceptions
+		expectedItems []domainPvz.WithReceptions
 		expectedError error
 	}{
 		{
@@ -112,7 +113,7 @@ func TestService_GetPVZs(t *testing.T) {
 				Limit: 0,
 			},
 			mockSetup: func(repo *mocks.Repository) {
-				expectedItems := []domainPvz.PVZWithReceptions{
+				expectedItems := []domainPvz.WithReceptions{
 					{
 						PVZ: domainPvz.PVZ{
 							ID:               uuid.New(),
@@ -124,7 +125,7 @@ func TestService_GetPVZs(t *testing.T) {
 				}
 				repo.On("GetPVZs", mock.Anything, mock.Anything, mock.Anything, mock.Anything, 1, 10).Return(expectedItems, nil)
 			},
-			expectedItems: []domainPvz.PVZWithReceptions{
+			expectedItems: []domainPvz.WithReceptions{
 				{
 					PVZ: domainPvz.PVZ{
 						City: domainPvz.CityMoscow,
@@ -143,11 +144,11 @@ func TestService_GetPVZs(t *testing.T) {
 				Limit:     5,
 			},
 			mockSetup: func(repo *mocks.Repository) {
-				expectedItems := []domainPvz.PVZWithReceptions{}
+				expectedItems := []domainPvz.WithReceptions{}
 				repo.On("GetPVZs", mock.Anything, mock.AnythingOfType("*time.Time"),
 					mock.AnythingOfType("*time.Time"), mock.AnythingOfType("*pvz.City"), 2, 5).Return(expectedItems, nil)
 			},
-			expectedItems: []domainPvz.PVZWithReceptions{},
+			expectedItems: []domainPvz.WithReceptions{},
 			expectedError: nil,
 		},
 	}

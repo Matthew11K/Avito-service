@@ -19,14 +19,14 @@ func respondWithJSON(w http.ResponseWriter, status int, payload interface{}) {
 	response, err := json.Marshal(payload)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message":"Ошибка при формировании ответа"}`))
+		_, _ = w.Write([]byte(`{"message":"Ошибка при формировании ответа"}`))
 
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	w.Write(response)
+	_, _ = w.Write(response)
 }
 
 func RespondWithError(w http.ResponseWriter, status int, message string, err error, logger Logger) {

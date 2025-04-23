@@ -79,23 +79,23 @@ func (_m *Repository) GetPVZByID(ctx context.Context, id uuid.UUID) (*pvz.PVZ, e
 }
 
 // GetPVZs provides a mock function with given fields: ctx, startDate, endDate, city, page, limit
-func (_m *Repository) GetPVZs(ctx context.Context, startDate *time.Time, endDate *time.Time, city *pvz.City, page int, limit int) ([]pvz.PVZWithReceptions, error) {
+func (_m *Repository) GetPVZs(ctx context.Context, startDate *time.Time, endDate *time.Time, city *pvz.City, page int, limit int) ([]pvz.WithReceptions, error) {
 	ret := _m.Called(ctx, startDate, endDate, city, page, limit)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetPVZs")
 	}
 
-	var r0 []pvz.PVZWithReceptions
+	var r0 []pvz.WithReceptions
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *time.Time, *time.Time, *pvz.City, int, int) ([]pvz.PVZWithReceptions, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *time.Time, *time.Time, *pvz.City, int, int) ([]pvz.WithReceptions, error)); ok {
 		return rf(ctx, startDate, endDate, city, page, limit)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, *time.Time, *time.Time, *pvz.City, int, int) []pvz.PVZWithReceptions); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *time.Time, *time.Time, *pvz.City, int, int) []pvz.WithReceptions); ok {
 		r0 = rf(ctx, startDate, endDate, city, page, limit)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]pvz.PVZWithReceptions)
+			r0 = ret.Get(0).([]pvz.WithReceptions)
 		}
 	}
 
